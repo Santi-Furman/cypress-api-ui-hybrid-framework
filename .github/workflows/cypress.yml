@@ -5,7 +5,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-  workflow_dispatch: # Permite ejecutar manualmente desde la pestaña Actions de GitHub
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -24,17 +24,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: 20
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Execute Cypress Tests (API & UI)
-        run: npx cypress run
-        continue-on-error: true # Permite que el pipeline siga para publicar el reporte aun si falla algún test
+      - name: Cypress Run Action
+        uses: cypress-io/github-action@v6
+        with:
+          command: npx cypress run
 
       - name: Upload Report Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mochawesome-html-report
@@ -42,7 +40,7 @@ jobs:
           retention-days: 30
 
       - name: Deploy Report to GitHub Pages
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
