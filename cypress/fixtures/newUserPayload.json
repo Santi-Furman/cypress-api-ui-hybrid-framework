@@ -1,0 +1,8 @@
+{
+    "name": "Santiago Furman",
+    "username": "sfurman",
+    "email": "santiago.qa@example.com",
+    "company": {
+    "name": "QA Automation Tech"
+  }
+}
