@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+
+
 Cypress.Commands.add('createUserApi', (userData) => {
   return cy.request({
     method: 'POST',
@@ -35,7 +37,10 @@ Cypress.Commands.add('createUserApi', (userData) => {
   });
 });
 
-Cypress.Commands.add('loginByCookie', (username = 'standard_user') => {
-  // En lugar de escribir en el formulario, seteamos la cookie de sesión directamente
-  cy.setCookie('session-username', username);
+// Custom Command para Login UI en SauceDemo con selectores directos
+Cypress.Commands.add('login', (username = 'standard_user', password = 'secret_sauce') => {
+  cy.visit('https://www.saucedemo.com/');
+  cy.get('[data-test="username"]').type(username);
+  cy.get('[data-test="password"]').type(password);
+  cy.get('[data-test="login-button"]').click();
 });

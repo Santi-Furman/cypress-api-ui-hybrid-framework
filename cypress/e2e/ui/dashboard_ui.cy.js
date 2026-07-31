@@ -3,9 +3,7 @@ import inventoryPage from '../../pages/InventoryPage';
 describe('UI Testing con Bypass de Login (Hybrid Approach)', () => {
 
   beforeEach(() => {
-    // Inyectamos la sesión antes de cargar la página
-    cy.loginByCookie('standard_user');
-    cy.visit('/inventory.html');
+    cy.login('standard_user', 'secret_sauce');
   });
 
   it('Verificar navegación directa al inventario y adición al carrito', () => {
